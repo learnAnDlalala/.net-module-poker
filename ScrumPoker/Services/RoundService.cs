@@ -51,7 +51,7 @@ namespace ScrumPoker.Services
       this.CreateTimer(newRound);
       ////var timer = await this.CreateTimer(db, newRound);
       
-      this.ctx.Clients.Group($"room={newRound.RoomID}").SendAsync("StartRoundEvent", newRound).Wait();
+      await this.ctx.Clients.Group($"room={newRound.RoomID}").SendAsync("StartRoundEvent", newRound);
       
     }
 
@@ -62,8 +62,7 @@ namespace ScrumPoker.Services
     /// <returns>инстант раунда.</returns>
     public async Task<Round> GetRoundInfo(int id)
     {
-      var info = await this.db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
-      return info;
+      return info = await this.db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
     }
 
     /// <summary>
@@ -82,7 +81,7 @@ namespace ScrumPoker.Services
       await db.SaveChangesAsync();
       CreateTimer(currentRound);
       // timer сделать
-       this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("StartRound",currentRound).Wait();
+       await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("StartRound",currentRound);
     }
 
     /// <summary>
@@ -103,7 +102,7 @@ namespace ScrumPoker.Services
       ////this.roundTimers.TryRemove()
       //currentRound.End = DateTime.Now;
       await this.db.SaveChangesAsync();
-      this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("EndRoundEvent",currentRound).Wait();
+      await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("EndRoundEvent",currentRound);
     }
 
     /// <summary>
@@ -112,7 +111,7 @@ namespace ScrumPoker.Services
     /// <param name="round">инстанс класса раунда.</param>
     /// <returns>таймер в секундах</returns>
     private void CreateTimer(Round round)
-    { 
+    {
       var ra = round.ID;
       var timer = new Timer(round.Timer * Math.Pow(10, 3));
       timer.AutoReset = false;
