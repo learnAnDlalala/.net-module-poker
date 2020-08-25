@@ -49,7 +49,7 @@ namespace ScrumPoker.Controllers
     /// <param name="user">инстанс класса пользователь.</param>
     /// <returns>true / false.</returns>
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(User user)
+    public async Task<ActionResult<bool>> Login(User user)
     {
       return await this.userService.CheckRegistration(user);
     }

@@ -23,17 +23,16 @@ namespace ScrumPoker.Services
     private IHubContext<RoomsHub> ctx;
     private readonly ConcurrentDictionary<int, Timer> roundTimers;
     private readonly ModelContext db;
-    
+
     /// <summary>
     /// Конструктор класса.
     /// </summary>
     /// <param name="context">контекст хаба.</param>
-    public RoundService (IHubContext<RoomsHub> context, ModelContext dbContext)
+    public RoundService(IHubContext<RoomsHub> context, ModelContext dbContext)
     {
       this.ctx = context;
       this.roundTimers = new ConcurrentDictionary<int, Timer>();
       this.db = dbContext;
-      
     }
 
     /// <summary>
@@ -44,15 +43,11 @@ namespace ScrumPoker.Services
     /// <returns>ничего не возвращает.</returns>
     public async Task Start(Round newRound)
     {
-      
       newRound.Start = DateTime.Now;
       this.db.Rounds.Add(newRound);
       await this.db.SaveChangesAsync();
       this.CreateTimer(newRound);
-      ////var timer = await this.CreateTimer(db, newRound);
-      
       await this.ctx.Clients.Group($"room={newRound.RoomID}").SendAsync("StartRoundEvent", newRound);
-      
     }
 
     /// <summary>
@@ -62,7 +57,7 @@ namespace ScrumPoker.Services
     /// <returns>инстант раунда.</returns>
     public async Task<Round> GetRoundInfo(int id)
     {
-      return info = await this.db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
+      return await this.db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
     }
 
     /// <summary>
@@ -81,7 +76,7 @@ namespace ScrumPoker.Services
       await db.SaveChangesAsync();
       CreateTimer(currentRound);
       // timer сделать
-       await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("StartRound",currentRound);
+      await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("StartRound", currentRound);
     }
 
     /// <summary>
@@ -99,10 +94,8 @@ namespace ScrumPoker.Services
       timer?.Stop();
       timer?.Dispose();
       this.roundTimers.TryRemove(id, out timer);
-      ////this.roundTimers.TryRemove()
-      //currentRound.End = DateTime.Now;
       await this.db.SaveChangesAsync();
-      await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("EndRoundEvent",currentRound);
+      await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("EndRoundEvent", currentRound);
     }
 
     /// <summary>
@@ -112,13 +105,13 @@ namespace ScrumPoker.Services
     /// <returns>таймер в секундах</returns>
     private void CreateTimer(Round round)
     {
-      var ra = round.ID;
+      var id = round.ID;
       var timer = new Timer(round.Timer * Math.Pow(10, 3));
       timer.AutoReset = false;
-      timer.Elapsed += (sender, e) => this.EndRound(ra);
+      timer.Elapsed += (sender, e) => this.EndRound(id);
       timer.Enabled = true;
       timer.Start();
-      this.roundTimers.TryAdd(ra, timer);
+      this.roundTimers.TryAdd(id, timer);
     }
   }
 }

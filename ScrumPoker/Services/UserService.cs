@@ -65,14 +65,9 @@ namespace ScrumPoker.Services
     /// </summary>
     /// <param name="checkUser">инстанс класса пользователя.</param>
     /// <returns>Строку с результатом.</returns>
-    public async Task<string> CheckRegistration(User checkUser)
+    public async Task<bool> CheckRegistration(User checkUser)
     {
-      if (await this.UserExists(checkUser.Name))
-      {
-        return "Success";
-      }
-
-      return "Fail";
+      return await this.UserExists(checkUser.Name));
     }
 
     /// <summary>
