@@ -135,3 +135,9 @@ C:\Users\79128\directum\ScrumPoker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.d
 C:\Users\79128\directum\ScrumPoker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.pdb
 C:\Users\79128\directum\ScrumPoker\NunitTest\bin\Debug\netcoreapp3.1\Castle.Core.dll
 C:\Users\79128\directum\ScrumPoker\NunitTest\bin\Debug\netcoreapp3.1\Moq.dll
+C:\Users\79128\directum\.net-module-poker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.csprojAssemblyReference.cache
+C:\Users\79128\directum\.net-module-poker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.AssemblyInfoInputs.cache
+C:\Users\79128\directum\.net-module-poker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.AssemblyInfo.cs
+C:\Users\79128\directum\.net-module-poker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.csproj.CoreCompileInputs.cache
+C:\Users\79128\directum\.net-module-poker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.dll
+C:\Users\79128\directum\.net-module-poker\NunitTest\obj\Debug\netcoreapp3.1\NunitTest.pdb

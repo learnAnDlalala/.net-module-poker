@@ -15,11 +15,6 @@ namespace ScrumPoker.Controllers
   public class DeckController : Controller
   {
     /// <summary>
-    /// Контекст бд.
-    /// </summary>
-    private readonly ModelContext db;
-
-    /// <summary>
     /// Сервис колод.
     /// </summary>
     private readonly DeckService deckService;
@@ -29,9 +24,8 @@ namespace ScrumPoker.Controllers
     /// </summary>
     /// <param name="contex">контекст бд.</param>
     /// <param name="deckService">сервис колод.</param>
-    public DeckController(ModelContext contex, DeckService deckService)
+    public DeckController(DeckService deckService)
     {
-      this.db = contex;
       this.deckService = deckService;
     }
 
@@ -42,12 +36,13 @@ namespace ScrumPoker.Controllers
     [HttpGet]
     public async Task<ActionResult<List<Deck>>> GetDecksList()
     {
-      return await this.deckService.ShowAll(this.db);
+      return await this.deckService.ShowAll();
     }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Deck>> GetDeckInfo(int id)
     {
-      return await this.deckService.getDeck(this.db, id);
+      return await this.deckService.getDeck(id);
     }
   }
 }

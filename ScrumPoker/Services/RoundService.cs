@@ -7,8 +7,6 @@ using ScrumPoker.SignalR;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -48,9 +46,9 @@ namespace ScrumPoker.Services
     {
       
       newRound.Start = DateTime.Now;
-      db.Rounds.Add(newRound);
-      await db.SaveChangesAsync();
-      CreateTimer(newRound);
+      this.db.Rounds.Add(newRound);
+      await this.db.SaveChangesAsync();
+      this.CreateTimer(newRound);
       ////var timer = await this.CreateTimer(db, newRound);
       
       this.ctx.Clients.Group($"room={newRound.RoomID}").SendAsync("StartRoundEvent", newRound).Wait();
@@ -60,24 +58,22 @@ namespace ScrumPoker.Services
     /// <summary>
     /// Информация о раунде.
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="id">id раунда.</param>
     /// <returns>инстант раунда.</returns>
     public async Task<ActionResult<Round>> GetRoundInfo(int id)
     {
-      var info = await db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
+      var info = await this.db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
       return info;
     }
 
     /// <summary>
     /// Перезапуск раунда.
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="round">id раунда.</param>
     /// <returns>ничего не возвращает.</returns>
     public async Task Restart(int id)
     {
-      var currentRound = await db.Rounds.FirstOrDefaultAsync(t => t.ID == id);
+      var currentRound = await this.db.Rounds.FirstOrDefaultAsync(t => t.ID == id);
       currentRound.Start = DateTime.Now;
       var timer = this.roundTimers.GetValueOrDefault(id);
       timer?.Stop();
@@ -92,23 +88,21 @@ namespace ScrumPoker.Services
     /// <summary>
     /// Окончание раунда.
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="round">инстант класса раунда.</param>
     /// <returns>ничего не возвращает.</returns>
     public async Task EndRound(int id)
     {
-      var currentRoom = await db.Rooms.Include(t => t.Rounds).FirstOrDefaultAsync(t => t.ID == id);
+      var currentRoom = await this.db.Rooms.Include(t => t.Rounds).FirstOrDefaultAsync(t => t.ID == id);
       //var currentRound = currentRoom.Rounds.Last();
-      var currentRound = await db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
+      var currentRound = await this.db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
       currentRound.End = DateTime.Now;
-      
       var timer = this.roundTimers.GetValueOrDefault(id);
       timer?.Stop();
       timer?.Dispose();
       this.roundTimers.TryRemove(id, out timer);
       ////this.roundTimers.TryRemove()
       //currentRound.End = DateTime.Now;
-      await db.SaveChangesAsync();
+      await this.db.SaveChangesAsync();
       this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("EndRoundEvent",currentRound).Wait();
     }
 
@@ -118,8 +112,7 @@ namespace ScrumPoker.Services
     /// <param name="round">инстанс класса раунда.</param>
     /// <returns>таймер в секундах</returns>
     private void CreateTimer(Round round)
-    {
-      
+    { 
       var ra = round.ID;
       var timer = new Timer(round.Timer * Math.Pow(10, 3));
       timer.AutoReset = false;

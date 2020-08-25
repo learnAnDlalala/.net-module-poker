@@ -53,3 +53,10 @@ C:\Users\79128\directum\ScrumPoker\ScrumPoker\bin\Debug\netcoreapp3.1\System.Net
 C:\Users\79128\directum\ScrumPoker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.csproj.CoreCompileInputs.cache
 C:\Users\79128\directum\ScrumPoker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\79128\directum\ScrumPoker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.csprojAssemblyReference.cache
+C:\Users\79128\directum\.net-module-poker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.csprojAssemblyReference.cache
+C:\Users\79128\directum\.net-module-poker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.AssemblyInfoInputs.cache
+C:\Users\79128\directum\.net-module-poker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.AssemblyInfo.cs
+C:\Users\79128\directum\.net-module-poker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.csproj.CoreCompileInputs.cache
+C:\Users\79128\directum\.net-module-poker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\79128\directum\.net-module-poker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.dll
+C:\Users\79128\directum\.net-module-poker\ScrumPoker\obj\Debug\netcoreapp3.1\ScrumPoker.pdb

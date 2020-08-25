@@ -9,15 +9,10 @@ namespace ScrumPoker.Controllers
   /// <summary>
   /// Контроллер раундов.
   /// </summary>
-  [Route("api/[controller]")]
-  [ApiController]
+    [Route("api/[controller]")]
+    [ApiController]
     public class RoundController : Controller
   {
-    /// <summary>
-    /// Контекст бд.
-    /// </summary>
-    private readonly ModelContext db;
-
     /// <summary>
     /// Сервис раундов.
     /// </summary>
@@ -28,9 +23,8 @@ namespace ScrumPoker.Controllers
     /// </summary>
     /// <param name="context">контекст бд.</param>
     /// <param name="roundService">сервис раундов.</param>
-    public RoundController (ModelContext context, RoundService roundService)
+    public RoundController (RoundService roundService)
     {
-      this.db = context;
       this.roundService = roundService;
     }
 

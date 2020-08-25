@@ -16,14 +16,14 @@ namespace NunitTest
   class RoundCardsTest
   {
     private ModelContext db;
-    private ScrumPoker.Services.RoundResults roundCard;
+    private ScrumPoker.Services.RoundResultsService roundCard;
     [SetUp]
     public void Setup()
     {
       var dbContextoptions = new DbContextOptionsBuilder<ModelContext>().UseInMemoryDatabase("TestDB");
       db = new ModelContext(dbContextoptions.Options);
       db.Database.EnsureCreated();
-      roundCard = new ScrumPoker.Services.RoundResults ();
+      roundCard = new ScrumPoker.Services.RoundResultsService ();
     }
     [TearDown]
     public void TearDown()

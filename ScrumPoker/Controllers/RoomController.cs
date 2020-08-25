@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ScrumPoker.Data;
 using ScrumPoker.Data.Models;
 using ScrumPoker.Services;
 using System.Collections.Generic;
@@ -15,11 +14,6 @@ namespace ScrumPoker.Controllers
   public class RoomController : Controller
   {
     /// <summary>
-    /// контекст бд.
-    /// </summary>
-    private readonly ModelContext db;
-
-    /// <summary>
     /// сервис комнат.
     /// </summary>
     private readonly RoomService roomService;
@@ -27,11 +21,9 @@ namespace ScrumPoker.Controllers
     /// <summary>
     /// Конструктор комнат.
     /// </summary>
-    /// <param name="context">контекст бд.</param>
     /// <param name="roomService">сервис комнат.</param>
-    public RoomController(ModelContext context, RoomService roomService)
+    public RoomController( RoomService roomService)
     {
-      this.db = context;
       this.roomService = roomService;
     }
 
@@ -43,7 +35,7 @@ namespace ScrumPoker.Controllers
     [HttpPost]
     public async Task<IActionResult> CreateRoom(Room newRoom)
     {
-      var id = await this.roomService.Create(this.db, newRoom);
+      var id = await this.roomService.Create(newRoom);
       return new OkObjectResult(id);
     }
 
@@ -54,7 +46,7 @@ namespace ScrumPoker.Controllers
     [HttpGet]
     public async Task<ActionResult<List<Room>>> GetRoomsList()
     {
-      return await this.roomService.ShowAll(this.db);
+      return await this.roomService.ShowAll();
     }
 
     /// <summary>
@@ -66,7 +58,7 @@ namespace ScrumPoker.Controllers
     [HttpPost("{id}")]
     public async Task<Room> EnterInRoomAndGetRoomInfo(User user ,int id)
     {
-      return await this.roomService.Enter(this.db, user.ID, id);
+      return await this.roomService.Enter(user.ID, id);
     }
 
     /// <summary>
@@ -77,7 +69,7 @@ namespace ScrumPoker.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<List<User>>> GetUsersInRoom(int id)
     {
-      return await this.roomService.ShowUsers(this.db, id);
+      return await this.roomService.ShowUsers(id);
     }
 
     /// <summary>
@@ -89,7 +81,7 @@ namespace ScrumPoker.Controllers
     [HttpPost("{id}/exit")]
     public async Task ExitFromRoom(int user, int id)
     {
-       await this.roomService.Exit(this.db, user, id);
+       await this.roomService.Exit(user, id);
      
     }
 
@@ -102,7 +94,7 @@ namespace ScrumPoker.Controllers
     [HttpDelete("{id}")]
     public async Task DeleteRoom(int id, int room)
     {
-      await this.roomService.Delete(this.db, id, room);
+      await this.roomService.Delete(id, room);
     }
   }
 }

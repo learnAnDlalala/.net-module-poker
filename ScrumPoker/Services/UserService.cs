@@ -21,6 +21,8 @@ namespace ScrumPoker.Services
     /// </summary>
     private IHubContext<RoomsHub> ctx;
 
+    private ModelContext db;
+
     /// <summary>
     /// Список SignalRconnections.
     /// </summary>
@@ -30,8 +32,9 @@ namespace ScrumPoker.Services
     /// Конструктор класса.
     /// </summary>
     /// <param name="context">контекст хаба.</param>
-    public UserService(IHubContext<RoomsHub> context)
+    public UserService(IHubContext<RoomsHub> context, ModelContext dbContext)
     {
+      this.db = dbContext;
       this.ctx = context;
       this.usersConnections = new ConcurrentDictionary<string, string>();
     }
@@ -39,35 +42,32 @@ namespace ScrumPoker.Services
     /// <summary>
     /// Создание нового пользователя.
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="newUser">инстанс класса пользователя.</param>
     /// <returns>возвращает id пользователя</returns>
-    public async Task<User> Create(ModelContext db, User newUser)
+    public async Task<User> Create(User newUser)
     {
-      var entity = db.Users.Add(newUser);
-      await db.SaveChangesAsync();
+      var entity = this.db.Users.Add(newUser);
+      await this.db.SaveChangesAsync();
       return newUser;
     }
 
     /// <summary>
     /// Список пользователей.
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <returns>список пользователей.</returns>
-    public async Task<ActionResult<List<User>>> ShowAll(ModelContext db)
+    public async Task<ActionResult<List<User>>> ShowAll()
     {
-      return await db.Users.ToListAsync();
+      return await this.db.Users.ToListAsync();
     }
 
     /// <summary>
     /// Проверка наличия пользователя в бд.
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="checkUser">инстанс класса пользователя.</param>
     /// <returns>Строку с результатом.</returns>
-    public async Task<string> CheckRegistration(ModelContext db, User checkUser)
+    public async Task<string> CheckRegistration(User checkUser)
     {
-      if (await this.UserExists(db, checkUser.Name))
+      if (await this.UserExists(checkUser.Name))
       {
         return "Success";
       }
@@ -117,12 +117,11 @@ namespace ScrumPoker.Services
     /// <summary>
     /// Существует ли пользователь.
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="name">имя пользователя.</param>
     /// <returns>true/ false.</returns>
-    public async Task<bool> UserExists(ModelContext db, string name)
+    public async Task<bool> UserExists(string name)
     {
-      return await db.Users.AnyAsync(e => e.Name == name);
+      return await this.db.Users.AnyAsync(e => e.Name == name);
     }
   }
 }
