@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService;
 using Microsoft.EntityFrameworkCore;
-using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
+using ScrumPoker.DataService.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

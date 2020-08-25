@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
+using ScrumPoker.DataService.Models;
 using ScrumPoker.SignalR;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace ScrumPoker.Services
     /// <returns>Строку с результатом.</returns>
     public async Task<bool> CheckRegistration(User checkUser)
     {
-      return await this.UserExists(checkUser.Name));
+      return await this.UserExists(checkUser.Name);
     }
 
     /// <summary>

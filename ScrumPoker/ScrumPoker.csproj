@@ -13,5 +13,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataService\DataService.csproj" />
+  </ItemGroup>
+
 
 </Project>

@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataService;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
+using ScrumPoker.DataService.Models;
 using ScrumPoker.SignalR;
 using System.Collections.Generic;
 using System.Linq;

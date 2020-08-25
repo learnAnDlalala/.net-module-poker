@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
+using ScrumPoker.DataService.Models;
 using ScrumPoker.Services;
 using System.Collections.Generic;
 using System.Security.Claims;

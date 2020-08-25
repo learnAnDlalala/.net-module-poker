@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ScrumPoker.Data.Models;
+using ScrumPoker.DataService.Models;
 using ScrumPoker.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;

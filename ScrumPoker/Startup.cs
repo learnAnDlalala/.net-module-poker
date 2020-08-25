@@ -1,3 +1,4 @@
+using DataService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +39,7 @@ namespace ScrumPoker
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
-      string connection = Configuration.GetConnectionString("DefaultConnection");
+      string connection = this.Configuration.GetConnectionString("DefaultConnection");
       services.AddDbContext<ModelContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
       services.AddSingleton<UserService>();
       services.AddSingleton<RoomService>();

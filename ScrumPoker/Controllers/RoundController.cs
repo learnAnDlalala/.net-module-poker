@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
+using ScrumPoker.DataService.Models;
 using ScrumPoker.Services;
 using System.Threading.Tasks;
 
@@ -9,7 +8,7 @@ namespace ScrumPoker.Controllers
   /// <summary>
   /// Контроллер раундов.
   /// </summary>
-    [Route("api/[controller]")]
+  [Route("api/[controller]")]
     [ApiController]
     public class RoundController : Controller
   {
