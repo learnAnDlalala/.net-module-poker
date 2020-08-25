@@ -43,7 +43,7 @@ namespace ScrumPoker.Services
     /// Создание комнаты.
     /// </summary>
     /// <param name="newRoom">инстанс класса комнаты.</param>
-    /// <returns></returns>
+    /// <returns>возвращает инстанс комнаты.</returns>
     public async Task<int> Create(Room newRoom)
     {
       //if (await this.RoomExists(db, newRoom.Name))
@@ -62,7 +62,7 @@ namespace ScrumPoker.Services
     /// Показать все комнаты.
     /// </summary>ram>
     /// <returns>Список комнат.</returns>
-    public async Task<ActionResult<List<Room>>> ShowAll()
+    public async Task<List<Room>> ShowAll()
     {
       return await this.db.Rooms.Include(d => d.Users).Include(d=>d.Rounds).ToListAsync();
     }

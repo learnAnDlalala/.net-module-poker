@@ -18,20 +18,21 @@ namespace ScrumPoker.Services
     {
       this.db = dbContext;
     }
+
     /// <summary>
     /// Показать все колоды.
     /// </summary>
     /// <param name="db">контекст бд.</param>
     /// <returns>список колод.</returns>
-    public async Task<ActionResult<List<Deck>>> ShowAll()
+    public async Task<List<Deck>> ShowAll()
     {
       return await db.Decks.Include(d => d.Cards).ToListAsync();
     }
-      public async Task<Deck> getDeck (int id)
+
+    public async Task<Deck> getDeck(int id)
     {
 
       return await db.Decks.Include(d => d.Cards).FirstOrDefaultAsync(t => t.ID == id);
     }
-      
   }
 }

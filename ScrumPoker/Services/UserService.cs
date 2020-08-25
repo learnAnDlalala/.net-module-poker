@@ -55,7 +55,7 @@ namespace ScrumPoker.Services
     /// Список пользователей.
     /// </summary>
     /// <returns>список пользователей.</returns>
-    public async Task<ActionResult<List<User>>> ShowAll()
+    public async Task<List<User>> ShowAll()
     {
       return await this.db.Users.ToListAsync();
     }

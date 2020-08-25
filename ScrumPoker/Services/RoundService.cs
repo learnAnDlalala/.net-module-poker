@@ -60,7 +60,7 @@ namespace ScrumPoker.Services
     /// </summary>
     /// <param name="id">id раунда.</param>
     /// <returns>инстант раунда.</returns>
-    public async Task<ActionResult<Round>> GetRoundInfo(int id)
+    public async Task<Round> GetRoundInfo(int id)
     {
       var info = await this.db.Rounds.Include(t => t.Cards).FirstOrDefaultAsync(t => t.ID == id);
       return info;
