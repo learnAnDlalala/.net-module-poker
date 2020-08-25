@@ -1,0 +1,12 @@
+C:\Users\79128\directum\.net-module-poker\DataService\bin\Debug\netcoreapp3.1\DataService.deps.json
+C:\Users\79128\directum\.net-module-poker\DataService\bin\Debug\netcoreapp3.1\DataService.dll
+C:\Users\79128\directum\.net-module-poker\DataService\obj\Debug\netcoreapp3.1\DataService.csprojAssemblyReference.cache
+C:\Users\79128\directum\.net-module-poker\DataService\obj\Debug\netcoreapp3.1\DataService.AssemblyInfoInputs.cache
+C:\Users\79128\directum\.net-module-poker\DataService\obj\Debug\netcoreapp3.1\DataService.AssemblyInfo.cs
+C:\Users\79128\directum\.net-module-poker\DataService\bin\Debug\netcoreapp3.1\DataService.runtimeconfig.json
+C:\Users\79128\directum\.net-module-poker\DataService\bin\Debug\netcoreapp3.1\DataService.runtimeconfig.dev.json
+C:\Users\79128\directum\.net-module-poker\DataService\obj\Debug\netcoreapp3.1\DataService.genruntimeconfig.cache
+C:\Users\79128\directum\.net-module-poker\DataService\bin\Debug\netcoreapp3.1\DataService.pdb
+C:\Users\79128\directum\.net-module-poker\DataService\obj\Debug\netcoreapp3.1\DataService.csproj.CoreCompileInputs.cache
+C:\Users\79128\directum\.net-module-poker\DataService\obj\Debug\netcoreapp3.1\DataService.dll
+C:\Users\79128\directum\.net-module-poker\DataService\obj\Debug\netcoreapp3.1\DataService.pdb
