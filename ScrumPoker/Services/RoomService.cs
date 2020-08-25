@@ -84,9 +84,9 @@ namespace ScrumPoker.Services
         room.Users.Add(user);
       }
       await this.db.SaveChangesAsync();
-      await this.ctx.Groups.RemoveFromGroupAsync(connectinID, $"room={roomId}");
-      await this.ctx.Groups.AddToGroupAsync(connectinID, $"room={roomId}");
-      await this.ctx.Clients.Group($"room={roomId}").SendAsync("UpdateUsersList", room);
+      await this.ctx.Groups.RemoveFromGroupAsync(connectinID, this.GetGroupKey(roomId));
+      await this.ctx.Groups.AddToGroupAsync(connectinID, this.GetGroupKey(roomId));
+      await this.ctx.Clients.Group(this.GetGroupKey(roomId)).SendAsync("UpdateUsersList", room);
       return room;
       //return await db.Rooms.Include(t => t.Users).Include(t => t.Rounds).FirstOrDefaultAsync(t=>t.ID == roomId);
     }
@@ -105,8 +105,8 @@ namespace ScrumPoker.Services
       var connectinID = this.userService.FindConnectionID(user.Name);
       room.Users.Remove(user);
       await this.db.SaveChangesAsync();
-      await this.ctx.Groups.RemoveFromGroupAsync(connectinID, $"room={roomId}");
-      await this.ctx.Clients.Group($"room={roomId}").SendAsync("UpdateUsersList");
+      await this.ctx.Groups.RemoveFromGroupAsync(connectinID, this.GetGroupKey(roomId));
+      await this.ctx.Clients.Group(this.GetGroupKey(roomId)).SendAsync("UpdateUsersList");
     }
 
     /// <summary>
@@ -138,6 +138,11 @@ namespace ScrumPoker.Services
     public async Task<bool> RoomExists(string name)
     {
       return await this.db.Rooms.AnyAsync(e => e.Name == name);
+    }
+
+    public string GetGroupKey (int id)
+    {
+      return $"roomId={id}";
     }
   }
 }
