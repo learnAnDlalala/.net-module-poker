@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScrumPoker", "ScrumPoker.csproj", "{A106C3C6-1330-462B-80C7-30951EED0ED1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NunitTest", "..\NunitTest\NunitTest.csproj", "{4F76D905-4A4D-4C3A-9E4F-F10ED89F4E46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A106C3C6-1330-462B-80C7-30951EED0ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A106C3C6-1330-462B-80C7-30951EED0ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A106C3C6-1330-462B-80C7-30951EED0ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A106C3C6-1330-462B-80C7-30951EED0ED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F76D905-4A4D-4C3A-9E4F-F10ED89F4E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F76D905-4A4D-4C3A-9E4F-F10ED89F4E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F76D905-4A4D-4C3A-9E4F-F10ED89F4E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F76D905-4A4D-4C3A-9E4F-F10ED89F4E46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A9C62D4-0C47-4A5A-8A56-4B691CB2F0C9}
+	EndGlobalSection
+EndGlobal
