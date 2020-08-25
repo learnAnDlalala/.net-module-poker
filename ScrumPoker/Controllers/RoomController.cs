@@ -81,7 +81,7 @@ namespace ScrumPoker.Controllers
     [HttpPost("{id}/exit")]
     public async Task ExitFromRoom(int user, int id)
     {
-       await this.roomService.Exit(user, id);
+       await this.roomService.ExitFromRoom(user, id);
      
     }
 
@@ -94,7 +94,7 @@ namespace ScrumPoker.Controllers
     [HttpDelete("{id}")]
     public async Task DeleteRoom(int id, int room)
     {
-      await this.roomService.Delete(id, room);
+      await this.roomService.DeleteUser(id, room);
     }
   }
 }

@@ -88,17 +88,15 @@ namespace ScrumPoker.Services
       await this.ctx.Groups.AddToGroupAsync(connectinID, this.GetGroupKey(roomId));
       await this.ctx.Clients.Group(this.GetGroupKey(roomId)).SendAsync("UpdateUsersList", room);
       return room;
-      //return await db.Rooms.Include(t => t.Users).Include(t => t.Rounds).FirstOrDefaultAsync(t=>t.ID == roomId);
     }
 
     /// <summary>
-    /// Удаление пользователя.
+    /// Удаление пользователя из комнаты (доступно только владельцу комнаты).
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="userId">id пользователя.</param>
     /// <param name="roomId">id комнаты.</param>
     /// <returns>ничего не возвращает.</returns>
-    public async Task Delete(int userId, int roomId)
+    public async Task DeleteUser(int userId, int roomId)
     {
       var room = await this.db.Rooms.FindAsync(roomId);
       var user = await this.db.Users.FindAsync(userId);
@@ -110,14 +108,14 @@ namespace ScrumPoker.Services
     }
 
     /// <summary>
-    /// Выход из комнаты.
+    /// Выход из комнаты (доступен всем).
     /// </summary>
     /// <param name="userId">id пользователя.</param>
     /// <param name="roomId">id комнаты.</param>
     /// <returns>ничего не возвращает.</returns>
-    public async Task Exit(int userId, int roomId)
+    public async Task ExitFromRoom(int userId, int roomId)
     {
-      await this.Delete(userId, roomId);
+      await this.DeleteUser(userId, roomId);
     }
 
     /// <summary>
