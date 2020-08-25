@@ -85,7 +85,7 @@ namespace ScrumPoker.Services
       await this.db.SaveChangesAsync();
       await this.ctx.Groups.RemoveFromGroupAsync(connectinID, this.GetGroupKey(roomId));
       await this.ctx.Groups.AddToGroupAsync(connectinID, this.GetGroupKey(roomId));
-      await this.ctx.Clients.Group(this.GetGroupKey(roomId)).SendAsync("UpdateUsersList", room);
+      await this.ctx.Clients.Group(this.GetGroupKey(roomId)).SendAsync("UpdateUserEvent", room);
       return room;
     }
 
@@ -103,7 +103,7 @@ namespace ScrumPoker.Services
       room.Users.Remove(user);
       await this.db.SaveChangesAsync();
       await this.ctx.Groups.RemoveFromGroupAsync(connectinID, this.GetGroupKey(roomId));
-      await this.ctx.Clients.Group(this.GetGroupKey(roomId)).SendAsync("UpdateUsersList");
+      await this.ctx.Clients.Group(this.GetGroupKey(roomId)).SendAsync("UpdateUsersEvent");
     }
 
     /// <summary>

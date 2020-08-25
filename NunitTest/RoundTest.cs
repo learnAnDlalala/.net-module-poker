@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-
-using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
 using ScrumPoker.Services;
 using ScrumPoker.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Moq;
 using NunitTest.UtilsContext;
+using DataService;
+using ScrumPoker.DataService.Models;
 
 namespace NunitTest
 {
@@ -27,8 +23,8 @@ namespace NunitTest
       db = new ModelContext(dbContextoptions.Options);
       db.Database.EnsureCreated();
 
-      context = HubContext.GetContext;
-      round = new RoundService((IHubContext<RoomsHub>)context);
+      context = MockHubContext.GetContext;
+      round = new RoundService((IHubContext<RoomsHub>)context, db);
     }
     [TearDown]
     public void TearDown()
@@ -38,27 +34,28 @@ namespace NunitTest
     [Test]
     public async Task CreateRound()
     {
-      var newRoom = new Room { Name = "TestRoom", OwnerID = 1 };
-      var newRound = new Round { Subject = "lorem sdsd", Timer=2, Room=newRoom };
-      await round.Start(db, newRound);
+      var newRoom = new Room { Name = "TestRoom", OwnerID = 1,  ID = 1};
+      var newRound = new Round { Subject = "lorem sdsd", Timer=2, RoomID=newRoom.ID};
+      await round.Start(newRound);
       var result = await db.Rounds.FirstOrDefaultAsync(t => t.Subject == "lorem sdsd");
-      var actualMethod = HubContext.CallingMethod;
-      Assert.That("StartRound", Is.EqualTo(actualMethod));
+      var actualMethod = MockHubContext.CallingMethod;
+      Assert.That("StartRoundEvent", Is.EqualTo(actualMethod));
       Assert.That(1, Is.EqualTo(result.ID));
+      Assert.That(newRoom.ID, Is.EqualTo(result.RoomID));
     }
     [Test]
     public async Task RestartRound()
     {
-      var newRoom = new Room { Name = "TestRoom", OwnerID = 1 };
-      var newRound = new Round { Subject = "lorem sdsd", Timer = 2, Room = newRoom };
-      await round.Start(db, newRound);
+      var newRoom = new Room { Name = "TestRoom", OwnerID = 1, ID = 1 };
+      var newRound = new Round { Subject = "lorem sdsd", Timer = 2, RoomID = newRoom.ID };
+      await round.Start(newRound);
       var restartRound = await db.Rounds.FirstOrDefaultAsync(t => t.ID == 1);
       restartRound.Timer = 3;
       restartRound.Subject = "LETS TRY";
-      await round.Restart(db,restartRound);
+      await round.Restart(restartRound.ID);
       var result = await db.Rounds.FirstOrDefaultAsync(t => t.Subject == "LETS TRY");
-      var actualMethod = HubContext.CallingMethod;
-      Assert.That("StartRound", Is.EqualTo(actualMethod));
+      var actualMethod = MockHubContext.CallingMethod;
+      Assert.That("StartRoundEvent", Is.EqualTo(actualMethod));
       Assert.That(1, Is.EqualTo(result.ID));
     }
     [Test]
@@ -66,12 +63,12 @@ namespace NunitTest
     {
       var newRoom = new Room { Name = "TestRoom", OwnerID = 1 };
       var newRound = new Round { Subject = "lorem sdsd", Timer = 2, Room = newRoom };
-      await round.Start(db, newRound);
-      await round.EndRound(db, newRound);
+      await round.Start(newRound);
+      await round.EndRound(newRound.ID);
       var result = newRound.End.ToString("d");
       var expect = DateTime.Now.ToString("d");
-      var actualMethod = HubContext.CallingMethod;
-      Assert.That("EndRound", Is.EqualTo(actualMethod));
+      var actualMethod = MockHubContext.CallingMethod;
+      Assert.That("EndRoundEvent", Is.EqualTo(actualMethod));
       Assert.That(expect, Is.EqualTo(result));
     }
     [Test]
@@ -79,13 +76,13 @@ namespace NunitTest
     {
       var newRoom = new Room { Name = "TestRoom", OwnerID = 1 };
       var newDeck = new Deck { Name = "1st Deck", Description = "test text" };
-      var newRound = new Round { Subject = "lorem sdsd", Timer = 2, Room = newRoom, Deck=newDeck};
-      await round.Start(db, newRound);
-      var result = await round.GetRoundInfo(db, 1);
-      Assert.That("lorem sdsd", Is.EqualTo(result.Value.Subject));
-      Assert.That(1, Is.EqualTo(result.Value.ID));
-      Assert.That("TestRoom", Is.EqualTo(result.Value.Room.Name));
-      Assert.That("1st Deck", Is.EqualTo(result.Value.Deck.Name));
+      var newRound = new Round { Subject = "lorem sdsd", Timer = 2, RoomID = 1, DeckID = 1 };
+      await round.Start(newRound);
+      var result = await round.GetRoundInfo(1);
+      Assert.That(newRound.Subject, Is.EqualTo(result.Subject));
+      Assert.That(newRound.ID, Is.EqualTo(result.ID));
+      Assert.That(newRound.RoomID, Is.EqualTo(result.RoomID));
+      Assert.That(newRound.DeckID, Is.EqualTo(result.DeckID));
     }
   }
 }

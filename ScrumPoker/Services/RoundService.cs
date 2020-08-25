@@ -75,7 +75,7 @@ namespace ScrumPoker.Services
       await db.SaveChangesAsync();
       CreateTimer(currentRound);
       // timer сделать
-      await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("StartRound", currentRound);
+      await this.ctx.Clients.Group($"room={currentRound.RoomID}").SendAsync("StartRoundEvent", currentRound);
     }
 
     /// <summary>

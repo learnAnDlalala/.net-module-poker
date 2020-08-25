@@ -2,20 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 //using NunitTest.UtilsContext;
-using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
 using ScrumPoker.Services;
 using ScrumPoker.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using NuGet.Frameworks;
-using System.ComponentModel.Design;
-using Moq;
 using NunitTest.UtilsContext;
+using DataService;
+using ScrumPoker.DataService.Models;
 
 namespace NunitTest
 {
@@ -30,8 +23,8 @@ namespace NunitTest
       var dbContextoptions = new DbContextOptionsBuilder<ModelContext>().UseInMemoryDatabase("TestDB");
       db = new ModelContext(dbContextoptions.Options);
       db.Database.EnsureCreated();
-      context = HubContext.GetContext;
-      user = new UserService(context);
+      context = MockHubContext.GetContext;
+      user = new UserService(context, db);
     }
     [TearDown]
     public void TearDown()
@@ -45,8 +38,8 @@ namespace NunitTest
       {
         Name = "T-1000"
       };
-      var id = await user.Create(db, newUser);
-      var currentUser = await db.Users.FirstOrDefaultAsync(t => t.ID == id);
+      var dbUser = await user.Create(newUser);
+      var currentUser = await db.Users.FirstOrDefaultAsync(t => t.ID == dbUser.ID);
       Assert.That(currentUser.Name, Is.EqualTo(newUser.Name), "Names are euqal");
     }
     [Test]
@@ -54,10 +47,10 @@ namespace NunitTest
     {
       var user1 = new User { Name = "Roma" };
       var user2 = new User { Name = "Alex" };
-      await user.Create(db,user1);
-      await user.Create(db, user2);
-      var result = await user.ShowAll(db);
-      var length = result.Value.Count;
+      await user.Create(user1);
+      await user.Create(user2);
+      var result = await user.ShowAll();
+      var length = result.Count;
       Assert.That(2, Is.EqualTo(length));
     }
     [Test]
@@ -86,8 +79,8 @@ namespace NunitTest
     public async Task UserExist()
     {
       var user1 = new User { Name = "Alex" };
-      await user.Create(db, user1);
-      var result = await user.UserExists(db, user1.ID);
+      await user.Create(user1);
+      var result = await user.UserExists(user1.Name);
       Assert.IsTrue(result);
     }
 

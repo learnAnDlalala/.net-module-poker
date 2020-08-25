@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 //using NunitTest.UtilsContext;
-using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
-using ScrumPoker.Services;
-using ScrumPoker.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using DataService;
+using ScrumPoker.DataService.Models;
+using System.Linq;
 
 namespace NunitTest
 {
@@ -23,7 +18,7 @@ namespace NunitTest
       var dbContextoptions = new DbContextOptionsBuilder<ModelContext>().UseInMemoryDatabase("TestDB");
       db = new ModelContext(dbContextoptions.Options);
       db.Database.EnsureCreated();
-      roundCard = new ScrumPoker.Services.RoundResultsService ();
+      roundCard = new ScrumPoker.Services.RoundResultsService(db);
     }
     [TearDown]
     public void TearDown()
@@ -31,9 +26,11 @@ namespace NunitTest
       db.Database.EnsureDeleted();
     }
     [Test]
-    public async Task ChooseCard ()
+    public async Task ChooseCard()
     {
       var newUser = new User { Name = "CommonUser" };
+      await db.Users.AddAsync(newUser);
+      var newUser2 = new User { Name = "CommonUser2" };
       await db.Users.AddAsync(newUser);
       var newRoom = new Room { Name = "TestRoom", OwnerID = 1 };
       await db.Rooms.AddAsync(newRoom);
@@ -51,14 +48,17 @@ namespace NunitTest
         newDeck.Cards.Add(card);
 
       }
-      var newRoundCard = new ScrumPoker.Data.Models.RoundResults { Round = newRound, UserID = 1 , CardValue = 3 };
-      await roundCard.UserChoose(db, newRoundCard);
+      var newRoundCard = new RoundResults { Round = newRound, UserID = 1, CardValue = 3 };
+      var newRoundCard2 = new RoundResults { Round = newRound, UserID = 2, CardValue = 1 };
+      await roundCard.UserChoose(newRoundCard);
+      await roundCard.UserChoose(newRoundCard2);
       var length = newRound.Cards.Count;
-      Assert.That(1, Is.EqualTo(length));
-      Assert.That(3, Is.EqualTo(newRoundCard.Card.ID));
+      Assert.That(2, Is.EqualTo(length));
+      Assert.That(2, Is.EqualTo(newRound.Result));
     }
-    [Test]
-    public async Task CardAlreadyExist ()
+
+
+    public async Task CardAlreadyExist()
     {
       var newUser = new User { Name = "CommonUser" };
       await db.Users.AddAsync(newUser);
@@ -78,13 +78,14 @@ namespace NunitTest
         newDeck.Cards.Add(card);
 
       }
-      var newRoundCard = new ScrumPoker.Data.Models.RoundResults { Round = newRound, User = 1, Card = cards[2] };
+      var newRoundCard = new RoundResults { Round = newRound, UserID = 1, CardValue = cards[2].Value };
       await db.RoundCards.AddAsync(newRoundCard);
-      newRoundCard.Card = cards[1];
-      await roundCard.UserChoose(db, newRoundCard);
+      newRoundCard.CardValue = cards[3].Value;
+      await roundCard.UserChoose(newRoundCard);
       var length = newRound.Cards.Count;
       Assert.That(1, Is.EqualTo(length));
-      Assert.That(2, Is.EqualTo(newRoundCard.Card.ID));
+      Assert.That(cards[3].Value, Is.EqualTo(newRound.Cards.Last().CardValue));
+      Assert.That(newRoundCard.UserID, Is.EqualTo(newRound.Cards.Last().UserID));
     }
   }
 }

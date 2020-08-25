@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 using NunitTest.UtilsContext;
-using ScrumPoker.Data;
-using ScrumPoker.Data.Models;
 using ScrumPoker.Services;
 using ScrumPoker.SignalR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using DataService;
+using ScrumPoker.DataService.Models;
 
 namespace NunitTest
 {
@@ -29,10 +24,10 @@ namespace NunitTest
       var dbContextoptions = new DbContextOptionsBuilder<ModelContext>().UseInMemoryDatabase("TestDB");
       this.db = new ModelContext(dbContextoptions.Options);
       db.Database.EnsureCreated();
-      context = HubContext.GetContext;
+      context = MockHubContext.GetContext;
       var a = new Mock<IHubClients<RoomsHub>>();
-       this.user = new UserService(context);
-      this.room = new RoomService(context,user);
+      this.user = new UserService(context,db);
+      this.room = new RoomService(context,user,db);
     }
     [TearDown]
     public void TearDown()
@@ -46,13 +41,13 @@ namespace NunitTest
       {
         Name = "Master"
       };
-      await user.Create(db,userCreator);
+      await user.Create(userCreator);
       var newRoom = new Room
       {
         Name = "TestRoom",
         OwnerID = 1
       };
-      await room.Create(db, newRoom);
+      await room.Create(newRoom);
       var length = await db.Rooms.CountAsync();
       Assert.That(1, Is.EqualTo(length));
     }
@@ -74,10 +69,10 @@ namespace NunitTest
         Name = "TestRoom2",
         OwnerID = 1
       };
-      await room.Create(db,Room1);
-      await room.Create(db,Room2);
-      var result = await room.ShowAll(db);
-      var length = result.Value.Count;
+      await room.Create(Room1);
+      await room.Create(Room2);
+      var result = await room.ShowAll();
+      var length = result.Count;
       Assert.That(2, Is.EqualTo(length));
     }
     [Test]
@@ -91,12 +86,13 @@ namespace NunitTest
         OwnerID = 1
       };
       
-      await room.Create(db, Room1);
+      await room.Create(Room1);
       await db.Users.AddAsync(new User { Name = "CommonUser", Room = Room1 });
       await db.SaveChangesAsync();
-      var result = await room.ShowUsers(db, 1);
+      var result = await room.ShowUsers(1);
       var length = result.Count;
-      Assert.That(2, Is.EqualTo(length));
+      Assert.That(1, Is.EqualTo(length));
+      Assert.That(2, Is.EqualTo(result[0].ID));
     }
     [Test]
     public async Task EnterInRoom()
@@ -105,21 +101,18 @@ namespace NunitTest
       {
         Name = "Master"
       };
-      await user.Create(db, userCreator);
+      await user.Create(userCreator);
       var newRoom = new Room
       {
         Name = "TestRoom",
         OwnerID = 1
       };
-      await room.Create(db, newRoom);
+      await room.Create(newRoom);
       await db.Users.AddAsync(new User { Name = "CommonUser" });
-      await room.Enter(db, 2, 1);
-      await db.SaveChangesAsync();
-      var result = await db.Users.Where(t => t.Room.ID == 1).ToListAsync();
-      var length = result.Count;
-      var actualMethod = HubContext.CallingMethod;
-      Assert.That("UpdateUsersList",Is.EqualTo(actualMethod));
-      Assert.That(2, Is.EqualTo(length));
+      var result = await room.Enter(2, 1);
+      var actualMethod = MockHubContext.CallingMethod;
+      Assert.That("UpdateUserEvent",Is.EqualTo(actualMethod));
+      Assert.That(1, Is.EqualTo(result.Users.Count));
     }
     [Test]
     public async Task DeleteUser ()
@@ -128,20 +121,20 @@ namespace NunitTest
       {
         Name = "Master"
       };
-      await user.Create(db, userCreator);
+      await user.Create(userCreator);
       var newRoom = new Room
       {
         Name = "TestRoom",
         OwnerID = 1
       };
-      await room.Create(db, newRoom);
+      await room.Create(newRoom);
       await db.Users.AddAsync(new User { Name = "CommonUser", Room = newRoom });
-      await room.Delete(db, 2, 1);
+      await room.DeleteUser(2, 1);
       var result = await db.Users.Where(t => t.Room.ID == 1).ToListAsync();
       var length = result.Count;
-      var actualMethod = HubContext.CallingMethod;
-      Assert.That("UpdateUsersList", Is.EqualTo(actualMethod));
-      Assert.That(1, Is.EqualTo(length));
+      var actualMethod = MockHubContext.CallingMethod;
+      Assert.That("UpdateUsersEvent", Is.EqualTo(actualMethod));
+      Assert.That(0, Is.EqualTo(length));
     }
     [Test]
     public async Task RoomExist ()
@@ -150,14 +143,14 @@ namespace NunitTest
       {
         Name = "Master"
       };
-      await user.Create(db, userCreator);
+      await user.Create(userCreator);
       var newRoom = new Room
       {
         Name = "TestRoom",
         OwnerID = 1
       };
-      await room.Create(db, newRoom);
-      var result = await room.RoomExists(db, newRoom.ID);
+      await room.Create(newRoom);
+      var result = await room.RoomExists(newRoom.Name);
       Assert.IsTrue(result);
     }
   }
