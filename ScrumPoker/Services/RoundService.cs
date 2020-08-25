@@ -113,11 +113,10 @@ namespace ScrumPoker.Services
     }
 
     /// <summary>
-    /// Создания таймера.
+    /// Создания таймера(принимает секунды).
     /// </summary>
-    /// <param name="db">контекст бд.</param>
     /// <param name="round">инстанс класса раунда.</param>
-    /// <returns>таймер.</returns>
+    /// <returns>таймер в секундах</returns>
     private void CreateTimer(Round round)
     {
       
