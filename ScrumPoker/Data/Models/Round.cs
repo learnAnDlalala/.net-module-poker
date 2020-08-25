@@ -15,7 +15,7 @@ namespace ScrumPoker.Data.Models
     /// </summary>
     public Round()
     {
-      this.Cards = new List<RoundCard>();
+      this.Cards = new List<RoundResults>();
       this.Deck = new List<Deck>();
     }
 
@@ -86,7 +86,7 @@ namespace ScrumPoker.Data.Models
     /// <summary>
     /// Список карт выбранных в течении голосования.
     /// </summary>
-    public virtual ICollection<RoundCard> Cards { get; set; }
+    public virtual ICollection<RoundResults> Cards { get; set; }
 
     /// <summary>
     /// Комната в которой проходит голосование.

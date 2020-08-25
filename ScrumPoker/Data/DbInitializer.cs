@@ -58,11 +58,11 @@ namespace ScrumPoker.Data
       context.Rounds.Add(round);
       context.SaveChanges();
 
-      var roundCards = new RoundCard[]
+      var roundCards = new RoundResults[]
       {
-        new RoundCard { CardValue = cards[1].Value , UserID = 1 ,RoundID = 1}, new RoundCard { CardValue = cards[2].Value , UserID = 2 , RoundID =1}
+        new RoundResults { CardValue = cards[1].Value , UserID = 1 ,RoundID = 1}, new RoundResults { CardValue = cards[2].Value , UserID = 2 , RoundID =1}
       };
-      foreach (RoundCard card  in roundCards)
+      foreach (RoundResults card  in roundCards)
       {
         context.RoundCards.Add(card);
       }

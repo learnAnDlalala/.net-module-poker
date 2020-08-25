@@ -41,7 +41,7 @@ namespace ScrumPoker.Data
     /// <summary>
     /// Cущность представляющая карты выбранные в раунде.
     /// </summary>
-    public DbSet<RoundCard> RoundCards { get; set; }
+    public DbSet<RoundResults> RoundCards { get; set; }
 
     /// <summary>
     /// Конструктор класса.

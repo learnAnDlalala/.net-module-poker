@@ -16,14 +16,14 @@ namespace NunitTest
   class RoundCardsTest
   {
     private ModelContext db;
-    private RoundCardService roundCard;
+    private ScrumPoker.Services.RoundResults roundCard;
     [SetUp]
     public void Setup()
     {
       var dbContextoptions = new DbContextOptionsBuilder<ModelContext>().UseInMemoryDatabase("TestDB");
       db = new ModelContext(dbContextoptions.Options);
       db.Database.EnsureCreated();
-      roundCard = new RoundCardService ();
+      roundCard = new ScrumPoker.Services.RoundResults ();
     }
     [TearDown]
     public void TearDown()
@@ -51,7 +51,7 @@ namespace NunitTest
         newDeck.Cards.Add(card);
 
       }
-      var newRoundCard = new RoundCard { Round = newRound, UserID = 1 , CardValue = 3 };
+      var newRoundCard = new ScrumPoker.Data.Models.RoundResults { Round = newRound, UserID = 1 , CardValue = 3 };
       await roundCard.UserChoose(db, newRoundCard);
       var length = newRound.Cards.Count;
       Assert.That(1, Is.EqualTo(length));
@@ -78,7 +78,7 @@ namespace NunitTest
         newDeck.Cards.Add(card);
 
       }
-      var newRoundCard = new RoundCard { Round = newRound, User = 1, Card = cards[2] };
+      var newRoundCard = new ScrumPoker.Data.Models.RoundResults { Round = newRound, User = 1, Card = cards[2] };
       await db.RoundCards.AddAsync(newRoundCard);
       newRoundCard.Card = cards[1];
       await roundCard.UserChoose(db, newRoundCard);
