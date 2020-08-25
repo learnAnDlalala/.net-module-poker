@@ -40,7 +40,7 @@ namespace ScrumPoker.Controllers
     /// <param name="id">id раунда.</param>
     /// <returns>инстанс класса раунд</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Round>> Get(int id)
+    public async Task<ActionResult<Round>> GetRoundInfo(int id)
     {
       return await this.roundService.GetRoundInfo(id);
     }
@@ -51,7 +51,7 @@ namespace ScrumPoker.Controllers
     /// <param name="round">инстанс класса раунд.</param>
     /// <returns>ничего не возвращает.</returns>
     [HttpPost]
-    public async Task Create(Round round)
+    public async Task CreateRound(Round round)
     {
       await this.roundService.Start(round);
     }
@@ -62,7 +62,7 @@ namespace ScrumPoker.Controllers
     /// <param name="round">инстанс класса раунд.</param>
     /// <returns>ничего не возвращает.</returns>
     [HttpPost("restart")]
-    public async Task Restarts(Round round)
+    public async Task RestartsRound(Round round)
     {
       await this.roundService.Restart(round.ID);
     }
@@ -73,7 +73,7 @@ namespace ScrumPoker.Controllers
     /// <param name="round">инстанс класса раунд.</param>
     /// <returns>ничего не возвращает.</returns>
     [HttpPost("end")]
-    public async Task End(Room room)
+    public async Task EndRound(Room room)
     {
       this.roundService.EndRound(room.ID);
     }

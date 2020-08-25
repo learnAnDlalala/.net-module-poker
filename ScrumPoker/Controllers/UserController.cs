@@ -70,7 +70,7 @@ namespace ScrumPoker.Controllers
     /// </summary>
     /// <returns>Список пользователей.</returns>
     [HttpGet]
-    public async Task<ActionResult<List<User>>> Get()
+    public async Task<ActionResult<List<User>>> GetUsersList()
     {
       return await this.userService.ShowAll(this.db);
     }
@@ -87,7 +87,7 @@ namespace ScrumPoker.Controllers
     }
 
     [HttpPost("auf")]
-    public async Task<User> Post(User user)
+    public async Task<User> CreateUserAndAuth(User user)
     {
       if (await userService.UserExists(this.db, user.Name) == false)
       {

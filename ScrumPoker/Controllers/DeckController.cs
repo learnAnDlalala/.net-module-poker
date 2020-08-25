@@ -40,12 +40,12 @@ namespace ScrumPoker.Controllers
     /// </summary>
     /// <returns>Список доступных колод.</returns>
     [HttpGet]
-    public async Task<ActionResult<List<Deck>>> Get()
+    public async Task<ActionResult<List<Deck>>> GetDecksList()
     {
       return await this.deckService.ShowAll(this.db);
     }
     [HttpGet("{id}")]
-    public async Task<ActionResult<Deck>> GetDeck(int id)
+    public async Task<ActionResult<Deck>> GetDeckInfo(int id)
     {
       return await this.deckService.getDeck(this.db, id);
     }

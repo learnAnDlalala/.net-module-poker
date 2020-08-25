@@ -41,7 +41,7 @@ namespace ScrumPoker.Controllers
     /// <param name="newRoom">инстанс класса комнаты.</param>
     /// <returns>ничего не возвращает</returns>
     [HttpPost]
-    public async Task<IActionResult> Post(Room newRoom)
+    public async Task<IActionResult> CreateRoom(Room newRoom)
     {
       var id = await this.roomService.Create(this.db, newRoom);
       return new OkObjectResult(id);
@@ -52,7 +52,7 @@ namespace ScrumPoker.Controllers
     /// </summary>
     /// <returns>список комнат.</returns>
     [HttpGet]
-    public async Task<ActionResult<List<Room>>> Get()
+    public async Task<ActionResult<List<Room>>> GetRoomsList()
     {
       return await this.roomService.ShowAll(this.db);
     }
@@ -64,7 +64,7 @@ namespace ScrumPoker.Controllers
     /// <param name="id">id комнаты.</param>
     /// <returns>ничего не возвращает.</returns>
     [HttpPost("{id}")]
-    public async Task<Room> Enter(User user ,int id)
+    public async Task<Room> EnterInRoomAndGetRoomInfo(User user ,int id)
     {
       return await this.roomService.Enter(this.db, user.ID, id);
     }
@@ -75,7 +75,7 @@ namespace ScrumPoker.Controllers
     /// <param name="id">id комнаты</param>
     /// <returns>список пользователей.</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<User>>> Info(int id)
+    public async Task<ActionResult<List<User>>> GetUsersInRoom(int id)
     {
       return await this.roomService.ShowUsers(this.db, id);
     }
@@ -87,7 +87,7 @@ namespace ScrumPoker.Controllers
     /// <param name="id">id комнаты</param>
     /// <returns>ничего не возвращает.</returns>
     [HttpPost("{id}/exit")]
-    public async Task Exit(int user, int id)
+    public async Task ExitFromRoom(int user, int id)
     {
        await this.roomService.Exit(this.db, user, id);
      
@@ -100,7 +100,7 @@ namespace ScrumPoker.Controllers
     /// <param name="room">id комнаты.</param>
     /// <returns>ничего не возвращает.</returns>
     [HttpDelete("{id}")]
-    public async Task Delete(int id, int room)
+    public async Task DeleteRoom(int id, int room)
     {
       await this.roomService.Delete(this.db, id, room);
     }
